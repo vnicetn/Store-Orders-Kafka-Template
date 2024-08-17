@@ -1,7 +1,6 @@
 package main
 
 import (
-	"context"
 	"encoding/json"
 	"log"
 	"net/http"
@@ -63,22 +62,6 @@ func PushOrderToQueue(topic string, message []byte) error {
 	return nil
 }
 
-func ConnectDatabase(ctx context.Context) error { // ###
-	client, err := mongo.Connect(ctx, options.Client().ApplyURI("mongodb://127.0.0.1:27017"))
-	if err != nil {
-		return err
-	}
-	defer func() {
-		if err := client.Disconnect(ctx); err != nil {
-			log.Println(err)
-		}
-	}()
-	ordersDAO, err := NewOrdersDAO(ctx, client)
-	if err != nil {
-		return err
-	}
-}
-
 // Place order handler
 
 func placeOrder(w http.ResponseWriter, r *http.Request) {
@@ -114,7 +97,10 @@ func placeOrder(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// 4. Write the data into the database ###
+	// 4. Write the data into the database
+
+	client, err := mongo.NewClient(options.Client(), ApplyURI(""))
+
 	// 5. Respond back to the user
 	orderId := string(order.ID)
 	itemId := string(order.ItemID)
