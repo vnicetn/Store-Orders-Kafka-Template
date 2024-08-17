@@ -99,7 +99,7 @@ func placeOrder(w http.ResponseWriter, r *http.Request) {
 
 	// 4. Write the data into the database
 
-	client, err := mongo.NewClient(options.Client(), ApplyURI(""))
+	client, err := mongo.NewClient(options.Client().ApplyURI("mongodb://127.0.0.1:27017"))
 
 	// 5. Respond back to the user
 	orderId := string(order.ID)
