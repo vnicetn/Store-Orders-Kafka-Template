@@ -63,7 +63,7 @@ func PushOrderToQueue(topic string, message []byte) error {
 	return nil
 }
 
-func ConnectDatabase(ctx context.Context) error {
+func ConnectDatabase(ctx context.Context) error { // ###
 	client, err := mongo.Connect(ctx, options.Client().ApplyURI("mongodb://127.0.0.1:27017"))
 	if err != nil {
 		return err
@@ -114,7 +114,7 @@ func placeOrder(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// 4. Write the data into the database
+	// 4. Write the data into the database ###
 	// 5. Respond back to the user
 	orderId := string(order.ID)
 	itemId := string(order.ItemID)
